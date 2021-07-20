@@ -5,7 +5,7 @@ import requests
 
 logger = get_task_logger(__name__)
 app = Celery('tasks', broker='amqp://rabbitmq:5672')
-
+output_folder = ""
 app_base_url = "batchjobapp:9000"  # comes from envvar
 
 @app.task()
@@ -13,6 +13,9 @@ def do_a_job(job_id: str, row: int, total_row: int, payload: dict, do_job_endpoi
     try:
         r = requests.post(url=do_job_endpoint, json=payload)
         # check the status of r and do log here!!!!
+
+        # save the result in the output folder with a method to append
+        # csv of payload and data
     except:
         # do log here!!!!
         pass
