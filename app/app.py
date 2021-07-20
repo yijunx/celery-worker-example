@@ -2,8 +2,7 @@ from flask import Flask
 from celery import Celery
 
 app = Flask(__name__)
-simple_app = Celery('simple_worker',
-                    broker='amqp://admin:mypass@rabbit:5672')
+simple_app = Celery('tasks', broker='amqp://rabbitmq:5672')
 
 
 @app.route('/simple_start_task')

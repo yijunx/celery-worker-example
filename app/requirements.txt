@@ -3,3 +3,7 @@ flask
 gunicorn
 alembic
 amqp
+pydantic
+sqlalchemy
+psycopg2
+python-dotenv
