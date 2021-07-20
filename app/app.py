@@ -33,20 +33,34 @@ def create_a_job():
     # save file
     # save to db...
     # start the celery worker..
-    return
+
+    # also need to create the empty outputfile in the output folder
+    return "hi"
 
 
 @app.route('/jobs', methods=["POST"])
 def list_jobs():
-    return
+    return "hi"
 
 
 @app.route('/jobs/<job_id>', methods=["GET"])
 def get_a_job():
-    return
+    return "hi"
 
 
 @app.route('/jobs/<job_id>', methods=["PATCH"])
 def update_a_job():
     # update db
-    return
+    return "hi"
+
+
+@app.route('/jobs/<job_id>/results', methods=["GET"])
+def download_a_job_results():
+    # update db
+    return "hi"
+
+
+@app.route('/jobs/<job_id>/logs', methods=["GET"])
+def download_a_job_logs():
+    # update db
+    return "hi"

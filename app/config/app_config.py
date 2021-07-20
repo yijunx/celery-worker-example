@@ -6,6 +6,8 @@ class Settings(BaseSettings):
 
     ENV: str
     DATABASE_URI: str
+    INPUT_DATA_STORAGE_FOLDER: str
+    OUTPUT_DATA_STORAGE_FOLDER: str
 
 
 class ProdConfig(Settings):
