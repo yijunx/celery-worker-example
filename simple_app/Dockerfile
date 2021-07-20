@@ -12,4 +12,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["gunicorn", "app.patched:app", "--work-class", "gevent", "-w", "3", "-b", "0.0.0.0:8000"]
+CMD ["gunicorn", "app:app", "-w", "3", "-b", "0.0.0.0:8000"]
