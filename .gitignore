@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# mq data/log
+/rabbitmq_data
+/rabbitmq_log

@@ -1,0 +1,73 @@
+version: "3"
+
+services:
+  batchjobapp:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ..:/opt/yijunx/code
+      - ~/etc/localtime:/opt/yijunx/etc/localtime
+      - ~/etc/timezone:/opt/yijunx/etc/timezone
+      - ../task_inputs:/opt/yijunx/data_inputs
+      - ../task_outputs:/opt/yijunx/data_outputs
+    command: ["tail -f /dev/null"]
+    ports:
+      - 9000:8000
+    networks:
+      - default
+    depends_on:
+      - db
+
+  db:
+    image: postgres:11
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=db
+    networks:
+      - default
+  
+  simple_app:
+    build:
+      context: ../simple_app
+    ports:
+      - 9001:8000
+    networks:
+      - default
+
+  pgadmin:
+    image: dpage/pgadmin4:5.1
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pdadmin4@pdadmin.org
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - 5050:80
+    depends_on:
+      - db
+    networks:
+      - default
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ../rabbitmq_data/:/var/lib/rabbitmq/
+        - ../rabbitmq_log:/var/log/rabbitmq
+    networks:
+        - default
+  
+  celery_worker:
+    build:
+      context: ../celery_app
+    networks:
+      - default
+
+networks:
+  default:
+    external:
+      name: micro-services
