@@ -1,8 +1,9 @@
-from flask import Flask
-from celery import Celery
+from flask import Flask, request
+from schemas import JobCreate
+from service import create_item
 
 app = Flask(__name__)
-simple_app = Celery('tasks', broker='amqp://rabbitmq:5672')
+
 
 
 @app.route('/simple_start_task')
@@ -28,14 +29,21 @@ def task_result(task_id):
 
 @app.route('/jobs', methods=["POST"])
 def create_a_job():
-    # get job name
-    # get file
-    # save file
-    # save to db...
-    # start the celery worker..
+    print("new upload is detected")
+    file = request.files.get("file")
+    name = request.form.get("name", None)
 
-    # also need to create the empty outputfile in the output folder
-    return "hi"
+
+    item_create = JobCreate(
+        name=name
+    )
+    try:
+        item = create_item(
+            file=file, item_create=item_create
+        )
+    except:
+        pass
+    return item.dict()
 
 
 @app.route('/jobs', methods=["POST"])

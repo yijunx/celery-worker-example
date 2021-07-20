@@ -66,6 +66,9 @@ services:
       context: ../celery_app
     networks:
       - default
+    volumes:
+      - ../task_inputs:/opt/yijunx/data_inputs
+      - ../task_outputs:/opt/yijunx/data_outputs
 
 networks:
   default:

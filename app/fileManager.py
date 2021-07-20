@@ -54,15 +54,12 @@ class PersistentVolumnFileManager(MetaFileManager):
         os.makedirs(conf.OUTPUT_DATA_STORAGE_FOLDER, exist_ok=True)
         print("folder created!")
 
-    def upload_file(self, file: FileStorage, key: str, name: str) -> Tuple[int, int]:
+    def upload_file(self, file: FileStorage, key: str) -> Tuple[int, int]:
         path = os.path.join(conf.INPUT_DATA_STORAGE_FOLDER, key)
         os.makedirs(os.path.dirname(path), exist_ok=True)
         file.save(path)
-        if name.endswith(".csv"):
-            with open(path) as f:
-                file_rows = sum(1 for _ in f) - 1
-        else:
-            file_rows = None
+        with open(path) as f:
+            file_rows = sum(1 for _ in f) - 1
         file_size = os.stat(path).st_size
         return file_size, file_rows
 
