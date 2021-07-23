@@ -7,11 +7,18 @@
     * celery_app is the worker, it receives job from app, and do the job. The actual job is sending each line of the csv provided by app to simple_app, in order to get a response, then store the response in csv. celery_app can find the input csv because of the job_id provided by app, and because app and celery_app mounts to same volumn
     * simple_app is an api service to process a line in the csv file, and provide a response.
 
-### how to set up ###
+### how to set up (VSCODE is needed) ###
+
+* Before start:
 
     docker network create micro-services
+
+
+* Then open the repo in the vscode remote container
+
     cd app
     make up
+
 
 ### how to use it ###
 
