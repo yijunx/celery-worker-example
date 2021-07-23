@@ -7,9 +7,12 @@ from fileManager import PersistentVolumnFileManager
 from werkzeug.datastructures import FileStorage
 import uuid
 from celery import Celery
+import logging
 
 fm = PersistentVolumnFileManager()
-simple_app = Celery('tasks', broker='amqp://rabbitmq:5672')
+celery_app = Celery("tasks", broker="amqp://rabbitmq:5672")
+logger = logging.getLogger(__name__)
+
 
 @contextmanager
 def get_db():
@@ -24,9 +27,7 @@ def get_db():
         session.close()
 
 
-def create_item(
-    file: FileStorage, item_create: JobCreate
-) -> Job:
+def create_item(file: FileStorage, item_create: JobCreate) -> Job:
     """
     This function creates a file.
     """
@@ -43,12 +44,16 @@ def create_item(
                 size=size,
                 rows=rows,
                 finished_rows=0,
-                done=False
-            )
+                done=False,
+            ),
         )
         item = Job.from_orm(db_item)
     # time to start the celery task...
-    r = simple_app.send_task('tasks.do_it', kwargs={'file_to_take': job_id, 'endpoint': 'simple_app:9001/random_number'})
+    r = celery_app.send_task(
+        "tasks.do_it",
+        kwargs={"job_id": job_id, "endpoint": "simple_app:9001/random_number"},
+    )
+    logger.info(r.backend)
     return item
 
 
@@ -57,6 +62,7 @@ def get_item(item_id: str) -> Job:
         db_item = get(db=db, item_id=item_id)
         item = Job.from_orm(db_item)
     return item
+
 
 def list_items() -> List[Job]:
     with get_db() as db:

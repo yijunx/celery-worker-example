@@ -11,6 +11,7 @@ services:
       - ~/etc/timezone:/opt/yijunx/etc/timezone
       - ../task_inputs:/opt/yijunx/data_inputs
       - ../task_outputs:/opt/yijunx/data_outputs
+      - ../task_logs:/opt/yijunx/task_logs
     command: ["tail -f /dev/null"]
     ports:
       - 9000:8000
@@ -69,6 +70,7 @@ services:
     volumes:
       - ../task_inputs:/opt/yijunx/data_inputs
       - ../task_outputs:/opt/yijunx/data_outputs
+      - ../task_logs:/opt/yijunx/task_logs
 
 networks:
   default:

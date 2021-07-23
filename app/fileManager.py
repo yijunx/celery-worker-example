@@ -17,7 +17,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-
 # METADATA_FILE_NAME = "metadata.json"
 # MODEL_FILE_NAME = "model.pkl"
 # REQUIREMENTS_FILE_NAME = "requirements.txt"

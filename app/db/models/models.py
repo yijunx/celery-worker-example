@@ -15,4 +15,3 @@ class Job(Base):
     rows = Column(Integer, nullable=False)
     finished_rows = Column(Integer, nullable=False)
     done = Column(Boolean, nullable=False)
-
