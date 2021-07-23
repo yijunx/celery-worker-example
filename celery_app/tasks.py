@@ -9,7 +9,7 @@ app = Celery("tasks", broker="amqp://rabbitmq:5672")
 INPUT_DATA_STORAGE_FOLDER = "/opt/yijunx/data_inputs"
 OUTPUT_DATA_STORAGE_FOLDER = "/opt/yijunx/data_outputs"
 LOG_STORAGE_FOLDER = "/opt/yijunx/task_logs"
-APP_BASE_URL = "batchjobapp:9000"  # comes from envvar
+APP_BASE_URL = "http://batchjobapp:8000"  # comes from envvar
 
 
 @app.task()
@@ -25,14 +25,14 @@ def do_it(job_id: str, endpoint: str):
             with open(os.path.join(LOG_STORAGE_FOLDER, job_id), "a") as f_log:
                 for l in f_in:
                     try:
+                        f_log.write(f"{endpoint},{l}")
                         r = requests.post(url=endpoint, json={"something": l})
-                        f_log.write(f"{l},{r.status_code}")
                         if r.status_code == 200:
                             f_out.write(f"{l},{r.json()['random_number']}" + "\n")
                         else:
                             f_out.write(f"{l}," + "\n")
                     except:
-                        f_log.write(f"{l},cannot get even status code..")
+                        f_log.write(f"cannot get even status code.." + "\n")
                     finally:
                         row += 1
                         if row % 5 == 0:

@@ -131,3 +131,8 @@ dmypy.json
 # mq data/log
 /rabbitmq_data
 /rabbitmq_log
+
+# data folders
+/task_logs
+/task_outputs
+/task_inputs
