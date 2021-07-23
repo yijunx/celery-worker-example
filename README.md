@@ -11,13 +11,13 @@
 
 * Before start:
 
-    docker network create micro-services
+        docker network create micro-services
 
 
 * Then open the repo in the vscode remote container
 
-    cd app
-    make up
+        cd app
+        make up
 
 
 ### how to use it ###
