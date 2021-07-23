@@ -52,9 +52,9 @@ def create_item(file: FileStorage, item_create: JobCreate) -> Job:
     # time to start the celery task...
     r = celery_app.send_task(
         "tasks.do_it",
+        task_id=job_id,
         kwargs={"job_id": job_id, "endpoint": "http://simple_app:8000/random_number"},
     )
-    logger.info(r.backend)
     return item
 
 
@@ -87,6 +87,17 @@ def download_results(item_id: str) -> bytes:
 def download_logs(item_id: str) -> bytes:
     file = fm.download_file(key=item_id, logs=True)
     return file
+
+
+def cancel_job(item_id: str) -> None:
+    celery_app.control.revoke(item_id, terminate=True, signal='SIGKILL')
+    # r = celery_app.send_task(
+    #     "tasks.do_it",
+    #     kwargs={"job_id": item_id, "endpoint": "http://simple_app:8000/random_number"},
+    # )
+    return None
+
+
 
 
 # def download_item(

@@ -7,6 +7,7 @@ from service import (
     download_logs,
     download_results,
     update_item,
+    cancel_job
 )
 
 app = Flask(__name__)
@@ -40,10 +41,7 @@ def create_a_job():
     name = request.form.get("name", None)
 
     item_create = JobCreate(name=name)
-    try:
-        item = create_item(file=file, item_create=item_create)
-    except:
-        pass
+    item = create_item(file=file, item_create=item_create)
     return item.dict()
 
 
@@ -92,3 +90,10 @@ def download_a_job_logs(job_id):
             "Content-Disposition": f'attachment;filename="{file_name}"',
         },
     )
+
+
+@app.route("/jobs/<job_id>/cancel", methods=["POST"])
+def cancel_a_job(job_id):
+    app.logger.info("cancel job...")
+    cancel_job(item_id=job_id)
+    return {'message': "well its cancelled..."}
