@@ -1,6 +1,6 @@
 from sqlalchemy.sql.expression import and_, or_
 from schemas import Job as JobSchema
-from app.db.models import Job as JobModel
+from db.models import Job as JobModel
 from sqlalchemy.orm import Session
 
 
@@ -23,3 +23,9 @@ def get(db: Session, item_id: str) -> JobModel:
 
 def get_all(db: Session):
     return db.query(JobModel).all()
+
+
+def update(db: Session, item_id: str, finished_rows: int) -> JobModel:
+    item = get(db=db, item_id=item_id)
+    item.finished_rows = finished_rows
+    return item

@@ -1,13 +1,14 @@
 from contextlib import contextmanager
-from app.db.database import SessionLocal
-from schemas import Job, JobCreate
-from repo import create, get, get_all
-from typing import List
+from db.database import SessionLocal
+from schemas import Job, JobCreate, JobUpdate
+from repo import create, get, get_all, update
+from typing import List, Tuple
 from fileManager import PersistentVolumnFileManager
 from werkzeug.datastructures import FileStorage
 import uuid
 from celery import Celery
 import logging
+
 
 fm = PersistentVolumnFileManager()
 celery_app = Celery("tasks", broker="amqp://rabbitmq:5672")
@@ -69,3 +70,45 @@ def list_items() -> List[Job]:
         db_items = get_all(db=db)
         items = [Job.from_orm(x) for x in db_items]
     return items
+
+
+def update_item(finished_rows: int, item_id: str) -> Job:
+    with get_db() as db:
+        db_item = update(db=db, item_id=item_id, finished_rows=finished_rows)
+        item = Job.from_orm(db_item)
+    return item
+
+
+def download_results(
+    item_id: str
+) -> bytes:
+    file = fm.download_file(key=item_id, logs=False)
+    return file
+
+
+def download_logs(
+    item_id: str
+) -> bytes:
+    file = fm.download_file(key=item_id, logs=True)
+    return file
+
+
+# def download_item(
+#     dataset_id: str, file_id: str, version: int = None
+# ) -> Tuple[bytes, str, int]:
+#     with session_scope() as db:
+#         db_file = fileRepo.get(db=db, dataset_id=dataset_id, file_id=file_id)
+#         file_name = db_file.name
+#         storage_type = db_file.storage_type
+
+#         if version is None:
+#             db_file_version = fileVersionRepo.get_latest(db=db, file_id=file_id)
+#         else:
+#             db_file_version = fileVersionRepo.get_by_version(
+#                 db=db, file_id=file_id, version=version
+#             )
+#         key = db_file_version.id
+#         size = db_file_version.size
+#     fm = get_file_manager(storage_type=storage_type)
+#     file = fm.download_file(key=key)
+#     return file, file_name, size

@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     DATABASE_URI: str
     INPUT_DATA_STORAGE_FOLDER: str
     OUTPUT_DATA_STORAGE_FOLDER: str
+    LOG_STORAGE_FOLDER: str
 
 
 class ProdConfig(Settings):

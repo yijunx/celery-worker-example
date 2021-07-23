@@ -1,4 +1,4 @@
-from app.config.app_config import conf
+from config.app_config import conf
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 

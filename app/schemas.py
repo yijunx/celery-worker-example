@@ -5,6 +5,10 @@ class JobCreate(BaseModel):
     name: str
 
 
+class JobUpdate(BaseModel):
+    finished_rows: int
+
+
 class Job(JobCreate):
     id: str
     size: str

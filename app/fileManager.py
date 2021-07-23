@@ -51,6 +51,7 @@ class PersistentVolumnFileManager(MetaFileManager):
         # create folder if not there
         os.makedirs(conf.INPUT_DATA_STORAGE_FOLDER, exist_ok=True)
         os.makedirs(conf.OUTPUT_DATA_STORAGE_FOLDER, exist_ok=True)
+        os.makedirs(conf.LOG_STORAGE_FOLDER, exist_ok=True)
         print("folder created!")
 
     def upload_file(self, file: FileStorage, key: str) -> Tuple[int, int]:
@@ -102,9 +103,12 @@ class PersistentVolumnFileManager(MetaFileManager):
     #             n += 1
 
     #     return result
-
-    def download_file(self, key: str) -> bytes:
-        path = os.path.join(conf.OUTPUT_DATA_STORAGE_FOLDER, key)
+    def download_file(self, key: str, logs=False) -> bytes:
+        if logs:
+            path = os.path.join(conf.LOG_STORAGE_FOLDER, key)
+        else:
+            path = os.path.join(conf.OUTPUT_DATA_STORAGE_FOLDER, key)
+            
         try:
             with open(path, "rb") as fd:
                 while 1:
@@ -115,3 +119,4 @@ class PersistentVolumnFileManager(MetaFileManager):
                         break
         except IOError:
             raise Exception(f"io error in download file...")
+
