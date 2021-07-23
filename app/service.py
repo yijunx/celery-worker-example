@@ -79,16 +79,12 @@ def update_item(finished_rows: int, item_id: str) -> Job:
     return item
 
 
-def download_results(
-    item_id: str
-) -> bytes:
+def download_results(item_id: str) -> bytes:
     file = fm.download_file(key=item_id, logs=False)
     return file
 
 
-def download_logs(
-    item_id: str
-) -> bytes:
+def download_logs(item_id: str) -> bytes:
     file = fm.download_file(key=item_id, logs=True)
     return file
 

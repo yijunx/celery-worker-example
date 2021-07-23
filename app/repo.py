@@ -18,7 +18,12 @@ def create(db: Session, item: JobSchema) -> JobModel:
 
 
 def get(db: Session, item_id: str) -> JobModel:
-    return db.query(JobModel).filter(JobModel.id == item_id).first()
+    return (
+        db.query(JobModel)
+        .filter(JobModel.id == item_id)
+        .order_by(JobModel.name.desc())
+        .first()
+    )
 
 
 def get_all(db: Session):

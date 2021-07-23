@@ -41,4 +41,3 @@ def do_it(job_id: str, endpoint: str):
                                 json={"finished_rows": row},
                             )
     requests.patch(url=f"{APP_BASE_URL}/jobs/{job_id}", json={"finished_rows": row})
-

@@ -1,6 +1,13 @@
 from flask import Flask, request, Response, stream_with_context
 from schemas import JobCreate
-from service import create_item, list_items, get_item, download_logs, download_results, update_item
+from service import (
+    create_item,
+    list_items,
+    get_item,
+    download_logs,
+    download_results,
+    update_item,
+)
 
 app = Flask(__name__)
 
@@ -56,7 +63,7 @@ def get_a_job(job_id):
 
 @app.route("/jobs/<job_id>", methods=["PATCH"])
 def update_a_job(job_id):
-    finished_rows = int(request.json['finished_rows'])
+    finished_rows = int(request.json["finished_rows"])
     item = update_item(finished_rows=finished_rows, item_id=job_id)
     return item.dict()
 

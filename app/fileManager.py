@@ -108,7 +108,7 @@ class PersistentVolumnFileManager(MetaFileManager):
             path = os.path.join(conf.LOG_STORAGE_FOLDER, key)
         else:
             path = os.path.join(conf.OUTPUT_DATA_STORAGE_FOLDER, key)
-            
+
         try:
             with open(path, "rb") as fd:
                 while 1:
@@ -119,4 +119,3 @@ class PersistentVolumnFileManager(MetaFileManager):
                         break
         except IOError:
             raise Exception(f"io error in download file...")
-
