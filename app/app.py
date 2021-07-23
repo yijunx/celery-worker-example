@@ -40,11 +40,11 @@ def create_a_job():
     return item.dict()
 
 
-@app.route("/jobs", methods=["POST"])
+@app.route("/jobs", methods=["GET"])
 def list_jobs():
     app.logger.info("list jobs...")
     items = list_items()
-    return [x.dict() for x in items]
+    return {"data": [x.dict() for x in items]}
 
 
 @app.route("/jobs/<job_id>", methods=["GET"])
