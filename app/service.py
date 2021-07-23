@@ -52,7 +52,7 @@ def create_item(file: FileStorage, item_create: JobCreate) -> Job:
     # time to start the celery task...
     r = celery_app.send_task(
         "tasks.do_it",
-        kwargs={"job_id": job_id, "endpoint": "http://simple_app:9001/random_number"},
+        kwargs={"job_id": job_id, "endpoint": "http://simple_app:8000/random_number"},
     )
     logger.info(r.backend)
     return item
